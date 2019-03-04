@@ -5,7 +5,7 @@
     :key="index")
     el-tag(:type="row.type") {{row.label}}:
     template(v-if="typeof realdata(row) === 'string'")
-      div {{realdata(row) || '-'}}
+      span {{realdata(row) || '-'}}
     template(v-else-if="Array.isArray(realdata(row))")
       smart-table(:data="realdata(row)" :config="formatterConfig(realdata(row))")
 </template>
@@ -51,5 +51,6 @@ export default {
 }
 .el-tag {
   margin-bottom 5px
+  margin-right 10px
 }
 </style>
