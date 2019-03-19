@@ -4,10 +4,10 @@
     v-for="(row, index) in config"
     :key="index")
     el-tag(:type="row.type") {{row.label}}:
-    template(v-if="typeof realdata(row) === 'string'")
-      span {{realdata(row) || '-'}}
-    template(v-else-if="Array.isArray(realdata(row))")
+    template(v-if="Array.isArray(realdata(row))")
       smart-table(:data="realdata(row)" :config="formatterConfig(realdata(row))")
+    template(v-else)
+      span {{realdata(row) || '-'}}
 </template>
 <script>
 export default {
