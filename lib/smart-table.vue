@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-table(:data="data" stripe)
+  el-table(:data="data" stripe :row-class-name="rowClassName")
     el-table-column(
       v-for="(item, index) in config"
       :key="index"
@@ -51,6 +51,12 @@ export default {
       } else {
         return value
       }
+    },
+    rowClassName ({row, rowIndex}) {
+      if(row.status) {
+        return `${row.status}-row`
+      }
+      return ''
     }
   }
 }
