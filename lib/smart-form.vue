@@ -72,7 +72,7 @@ export default {
     },
     span: {
       type: Number,
-      default: 8
+      default: 6
     }
   },
   data () {
