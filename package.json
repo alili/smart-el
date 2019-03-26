@@ -14,5 +14,14 @@
     "stylus-loader": "^3.0.2"
   },
   "author": "wonderful",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.5",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.3"
+  }
 }
