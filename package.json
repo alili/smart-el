@@ -1,5 +1,5 @@
 {
-  "name": "smart-el",
+  "name": "@didi/smart-el",
   "version": "1.0.4",
   "description": "",
   "main": "index.js",

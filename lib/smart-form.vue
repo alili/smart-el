@@ -1,5 +1,5 @@
 <template lang="pug">
-el-form.smart-form(:data='data', size="mini", :inline='isInline', :label-position='labelPosition', :label-width='labelWidth')
+el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :label-position='labelPosition', :label-width='labelWidth')
   el-form-item(v-for='(item, index) in realConfig', :key='index')
     span(slot='label') {{item.label}}
       el-popover(width='200', trigger='hover')
