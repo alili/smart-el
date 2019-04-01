@@ -56,7 +56,7 @@ export default {
       default: 'mini'
     },
     gutter: {
-      type: String,
+      type: Number,
       default: 24
     },
     labelPosition: {

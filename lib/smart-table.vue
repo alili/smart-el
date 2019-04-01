@@ -3,6 +3,7 @@
     el-table-column(
       v-for="(item, index) in config"
       :key="index"
+      :width="item.width"
       :label="item.label")
       template(slot-scope="scope")
         span(v-html="realValue.bind(this, scope.row, item)()")
