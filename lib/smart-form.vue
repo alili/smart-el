@@ -1,9 +1,10 @@
 <template lang="pug">
 el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :label-position='labelPosition', :label-width='labelWidth')
-  el-row(:gutter="24")
+  el-row(:gutter="gutter")
     el-col(v-for="(item, index) in realConfig"
       :key='index'
-      :span="item.span || span")
+      :span="item.span || span"
+      :offset="item.offset || 0")
       el-form-item
         span(slot='label') {{item.label}}
           el-popover(width='200', trigger='hover')
@@ -53,6 +54,10 @@ export default {
     size: {
       type: String,
       default: 'mini'
+    },
+    gutter: {
+      type: String,
+      default: 24
     },
     labelPosition: {
       type: String,
