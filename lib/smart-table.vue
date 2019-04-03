@@ -4,6 +4,7 @@
       v-for="(item, index) in config"
       :key="index"
       :width="item.width"
+      :min-width="item.minWidth"
       :label="item.label")
       template(slot-scope="scope")
         span(v-html="realValue.bind(this, scope.row, item)()")
@@ -25,17 +26,17 @@ export default {
   props: {
     data: {
       type: Array,
-      required: true
+      required: true,
     },
     config: {
       type: Array,
-      required: true
+      required: true,
     },
     operations: {
       type: Array,
       required: false,
-      default () { return [] }
-    }
+      default () { return [] },
+    },
   },
   data () {
     return {
@@ -53,13 +54,13 @@ export default {
         return value
       }
     },
-    rowClassName ({row, rowIndex}) {
-      if(row.status) {
+    rowClassName ({ row, rowIndex }) {
+      if (row.status) {
         return `${row.status}-row`
       }
       return ''
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

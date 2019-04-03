@@ -18,13 +18,15 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         el-select(v-if="item.type === 'select'", :multiple='item.multiple', :allow-create="item.allowCreate", :default-first-option="item.defaultFirstOption", :filterable='item.filterable || item.allowCreate', v-model='data[item.prop]', :placeholder='item.placeholder', :disabled="typeof item.disabled === 'function' ? item.disabled() : item.disabled", @change='selectChange.bind(this, item)()')
           el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
         //- 渲染 number 组件
-        el-input(v-if="item.type === 'number'", type='number', v-model='data[item.prop]', :min='item.min || 0', :max='item.max || Math.infinity', :disabled='item.disabled', :placeholder='item.placeholder')
+        el-input(v-if="item.type === 'number'", type='number', v-model='data[item.prop]', :min='item.min || 0', :max='item.max || Math.infinity', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
           template(v-if='item.append', slot='append') {{item.append}}
           template(v-if='item.prepend', slot='prepend') {{item.prepend}}
         //- 渲染 text 组件
-        el-input(v-if="item.type === 'text'", v-model='data[item.prop]', :disabled='item.disabled', :placeholder='item.placeholder')
+        el-input(v-if="item.type === 'text'", v-model='data[item.prop]', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
           template(v-if='item.append', slot='append') {{item.append}}
           template(v-if='item.prepend', slot='prepend') {{item.prepend}}
+        //- 渲染  autocomplete 组件
+        el-autocomplete(v-if="item.type === 'autocomplete'", v-model='data[item.prop]', :fetch-suggestions="item.suggestions.bind(data)" @select="item.select || localSelect" :disabled='item.disabled', :placeholder='item.placeholder', highlight-first-item)
         //- 渲染  date 组件
         el-date-picker(v-if="item.type === 'date'", v-model='data[item.prop]',type='date', :disabled='item.disabled', :placeholder='item.placeholder')
         //- 渲染  datetimerange 组件
@@ -49,40 +51,40 @@ export default {
   props: {
     isInline: {
       type: Boolean,
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: 'mini'
+      default: 'mini',
     },
     gutter: {
       type: Number,
-      default: 24
+      default: 24,
     },
     labelPosition: {
       type: String,
-      default: 'left'
+      default: 'left',
     },
     labelWidth: {
       type: String,
-      default: '80px'
+      default: '80px',
     },
     config: {
       type: Array,
-      required: true
+      required: true,
     },
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     span: {
       type: Number,
-      default: 6
-    }
+      default: 6,
+    },
   },
   data () {
     return {
-      data: {}
+      data: {},
     }
   },
   created () {
@@ -94,7 +96,7 @@ export default {
       handler (value) {
         this.data = this.clone(value)
       },
-      deep: true
+      deep: true,
     },
     data: {
       handler (data) {
@@ -102,13 +104,13 @@ export default {
           this.$emit('input', data)
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     realConfig () {
       return this.config.filter(item => this.isShow(item))
-    }
+    },
   },
   methods: {
     isShow (item) {
@@ -119,8 +121,11 @@ export default {
     },
     selectChange (item) {
       if (item.trigger) {
-        item.trigger.call(this.data)
+        item.trigger.call(this.data, item)
       }
+    },
+    localSelect (item) {
+      console.log(`item:`, item)
     },
     customOptions (item) {
       if (typeof item.options === 'function') {
@@ -128,12 +133,13 @@ export default {
       } else {
         return item.options
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
 .el-select,
+.el-autocomplete,
 .el-cascader {
   width: 100%;
 }

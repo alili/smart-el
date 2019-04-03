@@ -11,12 +11,12 @@ export default {
   props: {
     title: {
       type: String,
-      default: '标题'
+      default: '标题',
     },
     md: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data () {
     return {
@@ -25,7 +25,7 @@ export default {
   created () {},
   components: {},
   computed: {},
-  methods: {}
+  methods: {},
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

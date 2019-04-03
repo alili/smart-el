@@ -16,12 +16,12 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      required: true,
     },
     config: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data () {
     return {
@@ -38,11 +38,11 @@ export default {
       return Object.keys(data[0]).map(item => {
         return {
           label: item,
-          prop: item
+          prop: item,
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

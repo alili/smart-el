@@ -18,8 +18,8 @@ smart.install = function (Vue) {
       SmartForm,
       SmartTable,
       SmartInfo,
-      Board
-    }
+      Board,
+    },
   })
 }
 
