@@ -45,6 +45,7 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
 
 </template>
 <script>
+let clone = require('lodash.clone')
 
 export default {
   name: 'SmartForm',
@@ -88,13 +89,13 @@ export default {
     }
   },
   created () {
-    this.data = this.clone(this.value)
+    this.data = clone(this.value)
   },
   components: {},
   watch: {
     value: {
       handler (value) {
-        this.data = this.clone(value)
+        this.data = clone(value)
       },
       deep: true,
     },
