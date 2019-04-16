@@ -4,6 +4,8 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
     el-col(v-for="(item, index) in realConfig"
       :key='index'
       :span="item.span || span"
+      :push="item.push || 0"
+      :pull="item.pull || 0"
       :offset="item.offset || 0")
       el-form-item
         span(slot='label') {{item.label}}
@@ -19,7 +21,9 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
           el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
         //- 渲染 number 组件
         el-input(v-if="item.type === 'number'", type='number', v-model='data[item.prop]', :min='item.min || 0', :max='item.max || Math.infinity', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
-          template(v-if='item.append', slot='append') {{item.append}}
+          el-select(v-if="item.append && item.append.type === 'select'", slot='append' :style="item.append.style" :multiple='item.append.multiple', :allow-create="item.append.allowCreate", :default-first-option="item.append.defaultFirstOption", :filterable='item.append.filterable || item.append.allowCreate', v-model='data[item.append.prop]', :placeholder='item.append.placeholder', :disabled="typeof item.append.disabled === 'function' ? item.append.disabled() : item.append.disabled", @change='selectChange.bind(this, item.append)()')
+            el-option(v-for='option in customOptions.bind(this, item.append)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
+          template(v-else-if='item.append', slot='append') {{item.append}}
           template(v-if='item.prepend', slot='prepend') {{item.prepend}}
         //- 渲染 text 组件
         el-input(v-if="item.type === 'text'", v-model='data[item.prop]', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
@@ -29,7 +33,8 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         el-autocomplete(v-if="item.type === 'autocomplete'", v-model='data[item.prop]', :fetch-suggestions="item.suggestions.bind(data)" @select="item.select || localSelect" :disabled='item.disabled', :placeholder='item.placeholder', highlight-first-item)
         //- 渲染  date 组件
         el-date-picker(v-if="item.type === 'date'", v-model='data[item.prop]',type='date', :disabled='item.disabled', :placeholder='item.placeholder')
-        //- 渲染  datetimerange 组件
+        //- 渲染  datetime 组件
+        el-date-picker(v-if="item.type === 'datetime'", v-model='data[item.prop]',type='datetime', :disabled='item.disabled', :placeholder='item.placeholder')
         //- 渲染  daterange 组件
         el-date-picker(v-if="item.type === 'daterange'", v-model='data[item.prop]',type='daterange', :disabled='item.disabled', :placeholder='item.placeholder')
         //- 渲染  datetimerange 组件
@@ -138,10 +143,14 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.el-select,
-.el-autocomplete,
-.el-cascader {
-  width: 100%;
-}
+<style lang="stylus" scoped>
+.smart-form
+  .el-select,
+  .el-autocomplete,
+  .el-cascader {
+    width: 100%;
+  }
+  >>>.el-form-item__content .el-input-group {
+    vertical-align: bottom;
+  }
 </style>

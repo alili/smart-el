@@ -10,11 +10,13 @@
         span(v-html="realValue.bind(this, scope.row, item)()")
     el-table-column(
       label="操作"
+      :width="`${operations.length * 75}px`"
       v-if="operations.length")
       template(slot-scope="scope")
         el-button(
           v-for="(btn, index) in operations",
           :key="index"
+          :size="btn.size"
           :type="btn.type"
           @click="btn.action.bind(this, scope)()"
         ) {{btn.label}}

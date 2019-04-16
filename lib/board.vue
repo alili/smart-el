@@ -45,7 +45,6 @@ export default {
   }
   .content {
     min-width 100%
-    overflow scroll
   }
   ul {
     padding-left 0

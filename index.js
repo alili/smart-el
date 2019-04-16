@@ -9,6 +9,7 @@
 import SmartForm from './lib/smart-form'
 import SmartTable from './lib/smart-table'
 import SmartInfo from './lib/smart-info'
+import SmartMultiForm from './lib/smart-multi-form'
 import Board from './lib/board'
 
 const smart = {}
@@ -18,6 +19,7 @@ smart.install = function (Vue) {
       SmartForm,
       SmartTable,
       SmartInfo,
+      SmartMultiForm,
       Board,
     },
   })
