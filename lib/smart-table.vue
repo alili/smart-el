@@ -12,14 +12,24 @@
       label="操作"
       :width="`${operations.length * 75}px`"
       v-if="operations.length")
-      template(slot-scope="scope")
-        el-button(
-          v-for="(btn, index) in operations",
-          :key="index"
-          :size="btn.size"
-          :type="btn.type"
-          @click="btn.action.bind(this, scope)()"
-        ) {{btn.label}}
+      template(
+        slot-scope="scope")
+        el-popover(
+          :disabled="!btn.check"
+          placement="top"
+          trigger="click"
+          width="160"
+          v-for="(btn, index) in operations"
+          :key="index")
+          p {{btn.check}}
+          div(style="text-align: right; margin: 0")
+            el-button(type="primary", size="mini", @click="btn.action.bind(this, scope)()") 确定
+          el-button(
+            slot="reference"
+            :size="btn.size"
+            :type="btn.type"
+            @click="!btn.check && btn.action.bind(this, scope)()"
+          ) {{btn.label}}
 </template>
 <script>
 export default {
@@ -66,4 +76,7 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+.el-button {
+  margin 0 4px
+}
 </style>
