@@ -30,7 +30,7 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
           template(v-if='item.append', slot='append') {{item.append}}
           template(v-if='item.prepend', slot='prepend') {{item.prepend}}
         //- 渲染  autocomplete 组件
-        el-autocomplete(v-if="item.type === 'autocomplete'", v-model='data[item.prop]', :fetch-suggestions="item.suggestions.bind(data)" @select="item.select || localSelect" :disabled='item.disabled', :placeholder='item.placeholder', highlight-first-item)
+        el-autocomplete(v-if="item.type === 'autocomplete'", v-model='data[item.prop]', :fetch-suggestions="item.suggestions.bind(data)" @select="item.select" :disabled='item.disabled', :placeholder='item.placeholder', highlight-first-item)
         //- 渲染  date 组件
         el-date-picker(v-if="item.type === 'date'", v-model='data[item.prop]',type='date', :disabled='item.disabled', :placeholder='item.placeholder')
         //- 渲染  datetime 组件
@@ -47,7 +47,6 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         el-input(v-if="item.type === 'password'", type='password', v-model='data[item.prop]', :placeholder='item.placeholder')
           template(v-if='item.append', slot='append') {{item.append}}
           template(v-if='item.prepend', slot='prepend') {{item.prepend}}
-
 </template>
 <script>
 let clone = require('lodash.clone')
@@ -115,7 +114,14 @@ export default {
   },
   computed: {
     realConfig () {
-      return this.config.filter(item => this.isShow(item))
+      return this.config
+        .map((item) => {
+          if (item.type === 'autocomplete') {
+            item.select = (item.trigger || function () {}).bind(null, this.data)
+          }
+          return item
+        })
+        .filter(item => this.isShow(item))
     },
   },
   methods: {
@@ -130,8 +136,10 @@ export default {
         item.trigger.call(this.data, item)
       }
     },
-    localSelect (item) {
-      console.log(`item:`, item)
+    localSelect (item, data) {
+      if (item.select) {
+        item.select.call(data, item)
+      }
     },
     customOptions (item) {
       if (typeof item.options === 'function') {

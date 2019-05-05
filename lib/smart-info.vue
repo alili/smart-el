@@ -7,7 +7,7 @@
     template(v-if="Array.isArray(realdata(row))")
       smart-table(:data="realdata(row)" :config="formatterConfig(realdata(row))")
     template(v-else)
-      span {{realdata(row) || '-'}}
+      span {{realdata(row)}}
 </template>
 <script>
 export default {
@@ -32,7 +32,8 @@ export default {
   mounted () {},
   methods: {
     realdata (row) {
-      return row.formatter ? row.formatter(this.data) : this.data[row.prop]
+      return row.formatter ? row.formatter(this.data)
+        : (!this.data[row.prop] && this.data[row.prop] !== 0) ? '-' : this.data[row.prop]
     },
     formatterConfig (data) {
       return Object.keys(data[0]).map(item => {
