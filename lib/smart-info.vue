@@ -33,7 +33,7 @@ export default {
   methods: {
     realdata (row) {
       return row.formatter ? row.formatter(this.data)
-        : (!this.data[row.prop] && this.data[row.prop] !== 0) ? '-' : this.data[row.prop]
+        : ((!this.data[row.prop] && this.data[row.prop] !== 0) ? '-' : this.data[row.prop])
     },
     formatterConfig (data) {
       return Object.keys(data[0]).map(item => {
