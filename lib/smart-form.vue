@@ -18,7 +18,11 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         el-cascader(v-if="item.type === 'cascader'", :options='item.options', v-model='data[item.prop]', :filterable="item.filterable")
         //- 渲染 select 组件
         el-select(v-if="item.type === 'select'", :multiple='item.multiple', :allow-create="item.allowCreate", :default-first-option="item.defaultFirstOption", :filterable='item.filterable || item.allowCreate', v-model='data[item.prop]', :placeholder='item.placeholder', :disabled="typeof item.disabled === 'function' ? item.disabled() : item.disabled", @change='selectChange.bind(this, item)()')
-          el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
+          template(v-if="item.groups")
+            el-option-group(v-for='group in item.groups', :key='group.label', :label='group.label')
+              el-option(v-for='option in group.children', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
+          template(v-else)
+            el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
         //- 渲染 number 组件
         el-input(v-if="item.type === 'number'", type='number', v-model='data[item.prop]', :min='item.min || 0', :max='item.max || Math.infinity', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
           el-select(v-if="item.append && item.append.type === 'select'", slot='append' :style="item.append.style" :multiple='item.append.multiple', :allow-create="item.append.allowCreate", :default-first-option="item.append.defaultFirstOption", :filterable='item.append.filterable || item.append.allowCreate', v-model='data[item.append.prop]', :placeholder='item.append.placeholder', :disabled="typeof item.append.disabled === 'function' ? item.append.disabled() : item.append.disabled", @change='selectChange.bind(this, item.append)()')

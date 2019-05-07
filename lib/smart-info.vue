@@ -3,7 +3,8 @@
   .row(
     v-for="(row, index) in config"
     :key="index")
-    el-tag(:type="row.type") {{row.label}}:
+    span.label(v-if="!row.type") {{row.label}}:
+    el-tag(v-else :type="row.type") {{row.label}}:
     template(v-if="Array.isArray(realdata(row))")
       smart-table(:data="realdata(row)" :config="formatterConfig(realdata(row))")
     template(v-else)
@@ -52,6 +53,10 @@ export default {
 }
 .el-tag {
   margin-bottom 5px
+  margin-right 10px
+}
+.label {
+  font-weight bold
   margin-right 10px
 }
 </style>
