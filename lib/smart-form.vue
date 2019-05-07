@@ -19,7 +19,7 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         //- 渲染 select 组件
         el-select(v-if="item.type === 'select'", :multiple='item.multiple', :allow-create="item.allowCreate", :default-first-option="item.defaultFirstOption", :filterable='item.filterable || item.allowCreate', v-model='data[item.prop]', :placeholder='item.placeholder', :disabled="typeof item.disabled === 'function' ? item.disabled() : item.disabled", @change='selectChange.bind(this, item)()')
           template(v-if="item.groups")
-            el-option-group(v-for='group in item.groups', :key='group.label', :label='group.label')
+            el-option-group(v-for='group in customGroups.bind(this, item)()', :key='group.label', :label='group.label')
               el-option(v-for='option in group.children', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
           template(v-else)
             el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
@@ -150,6 +150,13 @@ export default {
         return item.options.call(this.data)
       } else {
         return item.options
+      }
+    },
+    customGroups (item) {
+      if (typeof item.groups === 'function') {
+        return item.groups.call(this.data)
+      } else {
+        return item.groups
       }
     },
   },
