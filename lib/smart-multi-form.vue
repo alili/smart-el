@@ -1,16 +1,15 @@
 <template lang="pug">
 .smart-multi-form
-  el-table(:data="data" stripe)
+  el-table(:data="tableData" stripe)
     el-table-column(
       v-for="(item, index) in config"
       :key="index"
       :label="item.label")
       template(slot-scope="scope")
-        SmartItem(:type="item.type" v-model="scope.row[item.prop]")
+        SmartItem(:type="item.type" size="mini" v-model="scope.row[item.prop]" :config="item")
     el-table-column(width="40")
-      template(slot-scope="scope")
+      template(slot-scope="scope" v-if="scope.$index !== tableData.length - 1")
         el-button.close(type="danger" size="mini" icon="el-icon-close" circle @click="close(scope.$index)")
-  el-button.btn(type="primary" @click="newLine") 新增
 </template>
 <script>
 import SmartItem from './smart-item'
@@ -34,20 +33,25 @@ export default {
   },
   data () {
     return {
-      data: null,
+      tableData: [],
     }
   },
   watch: {
     value: {
       handler (value) {
-        this.data = clone(value)
+        this.tableData = clone(value)
       },
+      immediate: true,
       deep: true,
     },
-    data: {
-      handler (data) {
-        if (JSON.stringify(this.data) !== JSON.stringify(this.value)) {
-          this.$emit('input', data)
+    tableData: {
+      handler (tableData) {
+        if (JSON.stringify(this.tableData) !== JSON.stringify(this.value)) {
+          this.$emit('input', tableData)
+        }
+
+        if (tableData.length && Object.values(tableData[tableData.length - 1]).join('') !== '') {
+          this.newLine()
         }
       },
       deep: true,
@@ -55,9 +59,12 @@ export default {
   },
   computed: {},
   created () {
-    this.data = clone(this.value)
   },
   mounted () {
+    this.tableData = clone(this.value)
+    this.$nextTick(() => {
+      this.newLine()
+    })
   },
   methods: {
     newLine () {
@@ -65,18 +72,15 @@ export default {
         obj[item.prop] = ''
         return obj
       }, {})
-      this.value.push(obj)
+      this.tableData.push(obj)
     },
     close (index) {
-      this.data.splice(index, 1)
+      this.tableData.splice(index, 1)
     },
   },
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-.btn {
-  width 100%
-}
 .close {
   width: 20px;
   height: 20px;
