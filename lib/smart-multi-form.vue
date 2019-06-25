@@ -3,7 +3,7 @@
   el-table(:data="tableData" stripe)
     el-table-column(
       v-for="(item, index) in config"
-      :key="index"
+      :key="JSON.stringify(item)"
       :label="item.label")
       template(slot-scope="scope")
         SmartItem(:type="item.type" size="mini" v-model="scope.row[item.prop]" :config="item")
