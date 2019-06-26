@@ -6,7 +6,7 @@
       :key="JSON.stringify(item)"
       :label="item.label")
       template(slot-scope="scope")
-        SmartItem(:type="item.type" size="mini" v-model="scope.row[item.prop]" :config="item")
+        SmartItem(:type="item.type" size="mini" v-model="scope.row[item.prop]" :config="item" :formData="scope.row")
     el-table-column(width="40")
       template(slot-scope="scope" v-if="scope.$index !== tableData.length - 1")
         el-button.close(type="danger" size="mini" icon="el-icon-close" circle @click="close(scope.$index)")

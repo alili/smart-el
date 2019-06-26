@@ -31,6 +31,9 @@ export default {
     value: {
       type: [String, Boolean, Array, Number, Object],
     },
+    formData: {
+      type: [String, Boolean, Array, Number, Object],
+    },
     size: {
       type: [String],
       default: 'mini',
@@ -69,12 +72,12 @@ export default {
   methods: {
     selectChange (item) {
       if (item.trigger) {
-        item.trigger.call(this.data, item)
+        item.trigger.call(this.data, this.formData, item)
       }
     },
     customOptions (item) {
       if (typeof item.options === 'function') {
-        return item.options.call(this.data)
+        return item.options.call(this.data, formData)
       } else {
         return item.options
       }
