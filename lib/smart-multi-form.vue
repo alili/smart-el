@@ -49,11 +49,11 @@ export default {
         if (JSON.stringify(this.tableData) !== JSON.stringify(this.value)) {
           this.$emit('input', tableData)
         }
-
-        if (tableData.length && Object.values(tableData[tableData.length - 1]).join('') !== '') {
+        if (!tableData.length || Object.values(tableData[tableData.length - 1]).join('') !== '') {
           this.newLine()
         }
       },
+      immediate: true,
       deep: true,
     },
   },

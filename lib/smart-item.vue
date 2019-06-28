@@ -77,7 +77,7 @@ export default {
     },
     customOptions (item) {
       if (typeof item.options === 'function') {
-        return item.options.call(this.data, formData)
+        return item.options.call(this.data, this.formData)
       } else {
         return item.options
       }
