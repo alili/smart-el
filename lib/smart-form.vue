@@ -10,7 +10,7 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
       el-form-item
         span(slot='label') {{item.label}}
           el-popover(width='200', trigger='hover')
-            i.el-icon-question(v-if='item.reminder', slot='reference')
+            i.el-icon-question(v-if='item.reminder', slot='reference' tabIndex="-1")
             div(v-html='item.reminder')
         //- 渲染 switch 组件
         el-switch(v-if="item.type === 'switch'", v-model='data[item.prop]')
