@@ -15,11 +15,11 @@
       template(
         slot-scope="scope")
         el-popover(
+          v-for="(btn, index) in operations"
           :disabled="!btn.check"
           placement="top"
           trigger="click"
           width="160"
-          v-for="(btn, index) in operations"
           :key="index")
           p {{btn.check}}
           div(style="text-align: right; margin: 0")
@@ -28,6 +28,7 @@
             slot="reference"
             :size="btn.size"
             :type="btn.type"
+            :disabled="typeof btn.disabled === 'function' ? btn.disabled.bind(this, scope)() : btn.disabled"
             @click="!btn.check && btn.action.bind(this, scope)()"
           ) {{btn.label}}
 </template>

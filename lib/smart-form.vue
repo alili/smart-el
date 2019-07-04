@@ -46,7 +46,7 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         //- 渲染  slider 组件
         el-slider(v-if="item.type === 'slider'", v-model='data[item.prop]', :step="item.step", :min="item.min", :max="item.max", :show-stops="item.showStops")
         //- 渲染 textarea 组件
-        el-input(v-if="item.type === 'textarea'", type='textarea', v-model='data[item.prop]', :disabled='item.disabled', :placeholder='item.placeholder')
+        el-input(v-if="item.type === 'textarea'", type='textarea', v-model='data[item.prop]', :disabled='item.disabled', :rows='item.rows',:placeholder='item.placeholder')
         //- 渲染 password 组件
         el-input(v-if="item.type === 'password'", type='password', v-model='data[item.prop]', :placeholder='item.placeholder')
           template(v-if='item.append', slot='append') {{item.append}}
