@@ -1,11 +1,12 @@
 <template lang="pug">
-  el-table(:data="data" stripe :row-class-name="rowClassName")
+  el-table(:data="data" :stripe="isStripe" :row-class-name="rowClassName")
     el-table-column(
       v-for="(item, index) in config"
       :key="index"
       :width="item.width"
       :min-width="item.minWidth"
       :prop="item.prop"
+      :row-class-name="item.className"
       :label="item.label")
       template(#default="{row, column}")
         slot(:name="column.property" :data="row[column.property]")
@@ -30,6 +31,7 @@
               :size="btn.size"
               :type="btn.type"
               :disabled="typeof btn.disabled === 'function' ? btn.disabled.bind(this, scope)() : btn.disabled"
+              v-show="typeof btn.visible === 'function' ? btn.visible.bind(this, scope)() : true"
               @click="!btn.check && btn.action.bind(this, scope)()"
             ) {{btn.label}}
 </template>
@@ -38,6 +40,10 @@ export default {
   name: 'SmartTable',
   components: {},
   props: {
+    isStripe: {
+      type: Boolean,
+      default: true,
+    },
     data: {
       type: Array,
       required: true,
