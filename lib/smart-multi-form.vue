@@ -5,11 +5,11 @@
       v-for="(item, index) in config"
       :key="JSON.stringify(item)"
       :label="item.label")
-      template(slot-scope="scope")
-        SmartItem(:type="item.type" size="mini" v-model="scope.row[item.prop]" :config="item" :formData="scope.row")
+      template(#default="{row}")
+        SmartItem(:type="item.type" size="mini" v-model="row[item.prop]" :config="item" :formData="row")
     el-table-column(width="40")
-      template(slot-scope="scope" v-if="scope.$index !== tableData.length - 1")
-        el-button.close(type="danger" size="mini" icon="el-icon-close" circle @click="close(scope.$index)")
+      template(#default="{$index}" v-if="$index !== tableData.length - 1")
+        el-button.close(type="danger" size="mini" icon="el-icon-close" circle @click="close($index)")
 </template>
 <script>
 import SmartItem from './smart-item'

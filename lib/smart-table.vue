@@ -5,15 +5,16 @@
       :key="index"
       :width="item.width"
       :min-width="item.minWidth"
+      :prop="item.prop"
       :label="item.label")
-      template(slot-scope="scope")
-        span(v-html="realValue.bind(this, scope.row, item)()")
+      template(#default="{row, column}")
+        slot(:name="column.property" :data="row[column.property]")
+        span(v-if="realValue" v-html="realValue.bind(this, row, item)()")
     el-table-column(
       label="操作"
       :width="`${operations.length * 75}px`"
       v-if="operations.length")
-      template(
-        slot-scope="scope")
+      template(#default="scope")
         el-popover(
           v-for="(btn, index) in operations"
           :disabled="!btn.check"
@@ -24,13 +25,13 @@
           p {{btn.check}}
           div(style="text-align: right; margin: 0")
             el-button(type="primary", size="mini", @click="btn.action.bind(this, scope)()") 确定
-          el-button(
-            slot="reference"
-            :size="btn.size"
-            :type="btn.type"
-            :disabled="typeof btn.disabled === 'function' ? btn.disabled.bind(this, scope)() : btn.disabled"
-            @click="!btn.check && btn.action.bind(this, scope)()"
-          ) {{btn.label}}
+          template(#reference)
+            el-button(
+              :size="btn.size"
+              :type="btn.type"
+              :disabled="typeof btn.disabled === 'function' ? btn.disabled.bind(this, scope)() : btn.disabled"
+              @click="!btn.check && btn.action.bind(this, scope)()"
+            ) {{btn.label}}
 </template>
 <script>
 export default {
@@ -61,6 +62,9 @@ export default {
   methods: {
     realValue (row, item) {
       let value = row[item.prop]
+      if (item.slot) {
+        return ''
+      }
       if (typeof item.formatter === 'function') {
         return item.formatter(row, item)
       } else {

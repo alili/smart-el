@@ -8,9 +8,9 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
       :pull="item.pull || 0"
       :offset="item.offset || 0")
       el-form-item
-        span(slot='label') {{item.label}}
+        template(#label) {{item.label}}
           el-popover(width='200', trigger='hover')
-            i.el-icon-question(v-if='item.reminder', slot='reference' tabIndex="-1")
+            template.el-icon-question(v-if='item.reminder', #reference tabIndex="-1")
             div(v-html='item.reminder')
         //- 渲染 switch 组件
         el-switch(v-if="item.type === 'switch'", v-model='data[item.prop]')
@@ -25,14 +25,14 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
             el-option(v-for='option in customOptions.bind(this, item)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
         //- 渲染 number 组件
         el-input(v-if="item.type === 'number'", type='number', v-model='data[item.prop]', :min='item.min || 0', :max='item.max || Math.infinity', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
-          el-select(v-if="item.append && item.append.type === 'select'", slot='append' :style="item.append.style" :multiple='item.append.multiple', :allow-create="item.append.allowCreate", :default-first-option="item.append.defaultFirstOption", :filterable='item.append.filterable || item.append.allowCreate', v-model='data[item.append.prop]', :placeholder='item.append.placeholder', :disabled="typeof item.append.disabled === 'function' ? item.append.disabled() : item.append.disabled", @change='selectChange.bind(this, item.append)()')
+          el-select(v-if="item.append && item.append.type === 'select'", #append :style="item.append.style" :multiple='item.append.multiple', :allow-create="item.append.allowCreate", :default-first-option="item.append.defaultFirstOption", :filterable='item.append.filterable || item.append.allowCreate', v-model='data[item.append.prop]', :placeholder='item.append.placeholder', :disabled="typeof item.append.disabled === 'function' ? item.append.disabled() : item.append.disabled", @change='selectChange.bind(this, item.append)()')
             el-option(v-for='option in customOptions.bind(this, item.append)()', :key='option.value', :label='option.label', v-html='option.custom && option.custom.bind(this, option)() || option.label', :value='option.value')
-          template(v-else-if='item.append', slot='append') {{item.append}}
-          template(v-if='item.prepend', slot='prepend') {{item.prepend}}
+          template(v-else-if='item.append', #append) {{item.append}}
+          template(v-if='item.prepend', #prepend) {{item.prepend}}
         //- 渲染 text 组件
         el-input(v-if="item.type === 'text'", v-model='data[item.prop]', :disabled='item.disabled', :placeholder='item.placeholder', :clearable="!!item.clearable")
-          template(v-if='item.append', slot='append') {{item.append}}
-          template(v-if='item.prepend', slot='prepend') {{item.prepend}}
+          template(v-if='item.append', #append) {{item.append}}
+          template(v-if='item.prepend', #prepend) {{item.prepend}}
         //- 渲染  autocomplete 组件
         el-autocomplete(v-if="item.type === 'autocomplete'", v-model='data[item.prop]', :fetch-suggestions="item.suggestions.bind(data)" @select="item.select" :disabled='item.disabled', :placeholder='item.placeholder', highlight-first-item)
         //- 渲染  date 组件
@@ -49,8 +49,8 @@ el-form.smart-form(:data='data', :size="size || 'mini'", :inline='isInline', :la
         el-input(v-if="item.type === 'textarea'", type='textarea', v-model='data[item.prop]', :disabled='item.disabled', :rows='item.rows',:placeholder='item.placeholder')
         //- 渲染 password 组件
         el-input(v-if="item.type === 'password'", type='password', v-model='data[item.prop]', :placeholder='item.placeholder')
-          template(v-if='item.append', slot='append') {{item.append}}
-          template(v-if='item.prepend', slot='prepend') {{item.prepend}}
+          template(v-if='item.append', #append) {{item.append}}
+          template(v-if='item.prepend', #prepend) {{item.prepend}}
 </template>
 <script>
 let clone = require('lodash.clone')
